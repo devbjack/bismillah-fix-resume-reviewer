@@ -74,13 +74,14 @@ class Store:
                 (job_id,))]
             return job
 
-    def set_requirements(self, job_id: int, reqs: list[dict]) -> None:
+    def set_requirements(self, job_id: int, reqs: list[dict], confirm: bool = True) -> None:
         with self._conn() as c:
             c.execute("DELETE FROM requirements WHERE job_id = ?", (job_id,))
             c.executemany(
                 "INSERT INTO requirements (job_id, text, type, weight, position) VALUES (?, ?, ?, ?, ?)",
                 [(job_id, r["text"], r["type"], r["weight"], i) for i, r in enumerate(reqs)])
-            c.execute("UPDATE jobs SET status = 'confirmed' WHERE id = ?", (job_id,))
+            if confirm:
+                c.execute("UPDATE jobs SET status = 'confirmed' WHERE id = ?", (job_id,))
 
     def delete_job(self, job_id: int) -> None:
         with self._conn() as c:

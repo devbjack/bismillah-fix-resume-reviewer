@@ -118,3 +118,10 @@ def test_delete_job_cascades(store):
     assert store.get_job(job) is None
     assert store.get_applicant(a) is None
     assert store.list_jobs() == []
+
+
+def test_set_requirements_draft_keeps_status(store):
+    job = store.create_job("J", "t")
+    store.set_requirements(job, REQS, confirm=False)
+    j = store.get_job(job)
+    assert j["status"] == "draft" and len(j["requirements"]) == 2
