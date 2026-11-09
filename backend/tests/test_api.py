@@ -240,3 +240,14 @@ def test_spa_fallback(tmp_path, env):
     assert "app" in client.get("/jobs/1/applicants/2").text
     r = client.get("/api/nope")
     assert r.status_code == 404 and r.headers["content-type"].startswith("application/json")
+
+
+def test_export_csv_escapes_formula_cells(env):
+    client, _, worker, *_ = env
+    job = make_job(client)
+    confirm(client, job["id"], [{"text": "=SUM(1,1) skills", "type": "must", "weight": 1}])
+    upload(client, job["id"], [("=HYPERLINK(evil).pdf", pdf_with("Python"), "application/pdf")])
+    worker.join_idle(10)
+    rows = list(csv.reader(io.StringIO(client.get(f"/api/jobs/{job['id']}/export.csv").text.lstrip("﻿"))))
+    assert rows[0][6] == "'=SUM(1,1) skills"
+    assert rows[1][1] == "'=HYPERLINK(evil).pdf"

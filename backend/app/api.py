@@ -34,6 +34,13 @@ class RequirementIn(BaseModel):
     weight: float = Field(gt=0)
 
 
+def _cell(value):
+    """Stop Excel from running applicant-controlled text (file names) as a formula."""
+    if isinstance(value, str) and value[:1] in ("=", "+", "-", "@", chr(9), chr(13)):  # tab, CR
+        return "'" + value
+    return value
+
+
 def _public_job(job: dict) -> dict:
     return {k: v for k, v in job.items() if k != "job_text"}
 
@@ -141,16 +148,16 @@ def create_app(deps: Deps, static_dir: Path | None = None) -> FastAPI:
         reqs = job["requirements"]
         buf = io.StringIO()
         w = csv.writer(buf)
-        w.writerow(["rank", "filename", "score", "must_met", "must_total", "flagged", *[r["text"] for r in reqs], "error"])
+        w.writerow(["rank", "filename", "score", "must_met", "must_total", "flagged", *[_cell(r["text"]) for r in reqs], "error"])
         for row in _with_rank(store.ranking(job_id)):
             probs = {r["requirement_id"]: r["probability"] for r in store.get_applicant(row["id"])["results"]}
             done = row["status"] == "done"
             w.writerow([
-                row["rank"] or "", row["filename"],
+                row["rank"] or "", _cell(row["filename"]),
                 row["score"] if done else "", row["must_met"] if done else "", row["must_total"] if done else "",
                 ("yes" if row["flagged"] else "no") if done else "",
                 *[f"{probs[r['id']]:.2f}" if r["id"] in probs else "" for r in reqs],
-                row["error"] or ("queued" if row["status"] == "queued" else ""),
+                _cell(row["error"]) or ("queued" if row["status"] == "queued" else ""),
             ])
         # BOM so Excel opens the UTF-8 file correctly
         return Response("﻿" + buf.getvalue(), media_type="text/csv; charset=utf-8",

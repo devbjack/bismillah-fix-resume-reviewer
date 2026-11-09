@@ -61,3 +61,30 @@ def test_ollama_separates_met_from_unmet():
     yes = d.p_met(req, ["Senior Backend Engineer, 2019-2024. Built Python services with Django and FastAPI."])
     no = d.p_met(req, ["Graphic designer with 5 years of experience in branding and print design."])
     assert yes >= 0.5 > no
+
+
+def test_connection_error_raises_decider_unavailable():
+    from app.decider import DeciderUnavailable
+
+    def chat(**kwargs):
+        raise ConnectionError("refused")
+    with pytest.raises(DeciderUnavailable):
+        OllamaDecider(chat=chat).p_met("r", ["e"])
+
+
+def test_default_clients_have_a_timeout(monkeypatch):
+    import ollama
+    seen = []
+
+    class FakeClient:
+        def __init__(self, **kwargs):
+            seen.append(kwargs)
+            self.chat = fake(resp("yes", {"yes": 1.0}))
+    monkeypatch.setattr(ollama, "Client", FakeClient)
+    OllamaDecider()
+    from app.req_extract import extract_requirements
+    try:
+        extract_requirements("job")
+    except Exception:
+        pass
+    assert len(seen) == 2 and all(k.get("timeout") for k in seen)

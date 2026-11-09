@@ -33,7 +33,8 @@ export function JobPage() {
   }, [jobId, refresh])
 
   // poll once a second while resumes are still being scored
-  const scoring = status.done < status.total
+  // also keep polling while any row still reads queued: status and ranking are fetched concurrently
+  const scoring = status.done < status.total || rows.some((r) => r.status === 'queued')
   useEffect(() => {
     if (!scoring) return
     const t = setInterval(() => refresh().catch(() => {}), 1000)

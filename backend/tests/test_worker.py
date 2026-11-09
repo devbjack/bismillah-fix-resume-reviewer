@@ -88,3 +88,42 @@ def test_process_reads_requirements_at_process_time(env):
     worker.process(a)
     new_id = store.get_job(job)["requirements"][0]["id"]
     assert [r["requirement_id"] for r in store.get_applicant(a)["results"]] == [new_id]
+
+
+def test_edit_mid_scoring_never_saves_stale_result(env):
+    store, worker, job, add = env
+    a = add("a.pdf", pdf_with("Python developer"))
+
+    class EditingDecider:
+        """Simulates HR saving new requirements while this resume is being scored."""
+        def __init__(self):
+            self.edited = False
+
+        def p_met(self, requirement, evidence):
+            if not self.edited:
+                self.edited = True
+                store.set_requirements(job, [{"text": "Go", "type": "must", "weight": 1}])
+                store.requeue_job(job)
+            return 0.9
+
+    worker.decider = EditingDecider()
+    worker.process(a)
+    app = store.get_applicant(a)
+    assert app["status"] == "queued" and app["results"] == [] and app["error"] is None
+    worker.process(a)  # the requeued run scores against the new list
+    new_id = store.get_job(job)["requirements"][0]["id"]
+    assert [r["requirement_id"] for r in store.get_applicant(a)["results"]] == [new_id]
+
+
+def test_decider_unavailable_gives_clear_message(env):
+    from app.decider import DeciderUnavailable
+    store, worker, job, add = env
+    a = add("a.pdf", pdf_with("Python developer"))
+
+    class Down:
+        def p_met(self, requirement, evidence):
+            raise DeciderUnavailable("refused")
+
+    worker.decider = Down()
+    worker.process(a)
+    assert store.get_applicant(a)["error"] == "Couldn't reach Ollama — start it, then save the requirements again to re-score."

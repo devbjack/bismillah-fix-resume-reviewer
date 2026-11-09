@@ -10,6 +10,10 @@ USER_TEMPLATE = (
 )
 
 
+class DeciderUnavailable(Exception):
+    pass
+
+
 class Decider(Protocol):
     def p_met(self, requirement: str, evidence: list[str]) -> float: ...
 
@@ -20,22 +24,25 @@ class OllamaDecider:
     def __init__(self, chat: Callable[..., Any] | None = None, model: str = "qwen2.5:3b"):
         if chat is None:
             import ollama
-            chat = ollama.Client().chat
+            chat = ollama.Client(timeout=120).chat  # a hung Ollama must not block the worker forever
         self.chat = chat
         self.model = model
 
     def p_met(self, requirement: str, evidence: list[str]) -> float:
         excerpts = "\n\n---\n\n".join(evidence)
-        response = self.chat(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": USER_TEMPLATE.format(excerpts=excerpts, requirement=requirement)},
-            ],
-            options={"temperature": 0, "num_predict": 1},
-            logprobs=True,
-            top_logprobs=10,
-        )
+        try:
+            response = self.chat(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": USER_TEMPLATE.format(excerpts=excerpts, requirement=requirement)},
+                ],
+                options={"temperature": 0, "num_predict": 1},
+                logprobs=True,
+                top_logprobs=10,
+            )
+        except Exception as e:
+            raise DeciderUnavailable(str(e)) from e
         p_yes = p_no = 0.0
         if response.logprobs:
             for alt in response.logprobs[0].top_logprobs:

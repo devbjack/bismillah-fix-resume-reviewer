@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import logging
 import queue
+import sqlite3
 import threading
 import time
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from app.decider import DeciderUnavailable
 from app.pdf_text import extract_text
 from app.pipeline import NoTextError, review
 from app.retriever import Embed
@@ -17,6 +19,7 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 NO_TEXT = "No text found — scanned PDF?"
+OLLAMA_DOWN = "Couldn't reach Ollama — start it, then save the requirements again to re-score."
 
 
 class Worker:
@@ -71,8 +74,14 @@ class Worker:
         path = self.uploads_dir / str(job["id"]) / f"{applicant_id}.pdf"
         try:
             sr, results = review(extract_text(path.read_bytes()), job["requirements"], self.decider, self.embed)
-            self.store.save_result(applicant_id, sr, results)
         except NoTextError:
             self.store.mark_failed(applicant_id, NO_TEXT)
+        except DeciderUnavailable:
+            self.store.mark_failed(applicant_id, OLLAMA_DOWN)
         except Exception as e:
             self.store.mark_failed(applicant_id, str(e) or type(e).__name__)
+        else:
+            try:
+                self.store.save_result(applicant_id, sr, results)
+            except sqlite3.IntegrityError:
+                pass  # requirements changed (or job deleted) mid-scoring; the applicant is already requeued

@@ -125,3 +125,12 @@ def test_set_requirements_draft_keeps_status(store):
     store.set_requirements(job, REQS, confirm=False)
     j = store.get_job(job)
     assert j["status"] == "draft" and len(j["requirements"]) == 2
+
+
+def test_requirement_ids_never_reused(store):
+    job = store.create_job("J", "t")
+    store.set_requirements(job, REQS)
+    old = {r["id"] for r in store.get_job(job)["requirements"]}
+    store.set_requirements(job, REQS)
+    new = {r["id"] for r in store.get_job(job)["requirements"]}
+    assert old.isdisjoint(new)

@@ -31,7 +31,7 @@ def extract_requirements(job_text: str, chat: Callable[..., Any] | None = None,
                          model: str = "qwen2.5:3b") -> list[dict]:
     if chat is None:
         import ollama
-        chat = ollama.Client().chat
+        chat = ollama.Client(timeout=120).chat
     try:
         response = chat(
             model=model,
