@@ -39,13 +39,13 @@ export const inputClass =
   'placeholder:text-ink-mute focus:border-aubergine focus:outline-none focus-visible:outline-none ' +
   'focus:ring-2 focus:ring-aubergine/25 transition-colors duration-150'
 
-export function TypeChip({ type }: { type: 'must' | 'nice' }) {
+export function TypeChip({ type, className = '' }: { type: 'must' | 'nice'; className?: string }) {
   return type === 'must' ? (
-    <span className="inline-flex shrink-0 items-center rounded-pill bg-aubergine px-2.5 py-1 text-[11px] font-bold leading-none tracking-[0.96px] text-white">
+    <span className={`inline-flex shrink-0 items-center rounded-pill bg-aubergine px-2.5 py-1 text-[11px] font-bold leading-none tracking-[0.96px] text-white ${className}`}>
       MUST
     </span>
   ) : (
-    <span className="inline-flex shrink-0 items-center rounded-pill bg-cream px-2.5 py-1 text-[11px] font-bold leading-none tracking-[0.96px] text-ink">
+    <span className={`inline-flex shrink-0 items-center rounded-pill bg-cream px-2.5 py-1 text-[11px] font-bold leading-none tracking-[0.96px] text-ink ${className}`}>
       NICE
     </span>
   )

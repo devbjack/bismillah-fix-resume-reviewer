@@ -86,14 +86,14 @@ function EditorForm({ job, hasApplicants, onCancel, onSaved }: Props & { onCance
         Every score is built from this list. Fix anything the AI misread, mark what is a must-have, and set how much each one counts.
       </p>
 
-      <div className="mt-5 hidden grid-cols-[1fr_8.5rem_5.5rem_2.75rem] gap-3 px-1 text-xs font-semibold text-ink-mute sm:grid" aria-hidden>
+      <div className="mt-5 hidden grid-cols-[1fr_10rem_5.5rem_2.75rem] gap-3 px-1 text-xs font-semibold text-ink-mute sm:grid" aria-hidden>
         <span>Requirement</span>
         <span>Type</span>
         <span>Weight</span>
       </div>
       <ol className="mt-2 flex flex-col gap-3 sm:gap-2">
         {rows.map((r, i) => (
-          <li key={i} className="grid grid-cols-[1fr_auto] gap-2 rounded-lg bg-cream/50 p-2 sm:grid-cols-[1fr_8.5rem_5.5rem_2.75rem] sm:gap-3 sm:bg-transparent sm:p-0">
+          <li key={i} className="grid grid-cols-[1fr_auto] gap-2 rounded-lg bg-cream/50 p-2 sm:grid-cols-[1fr_10rem_5.5rem_2.75rem] sm:gap-3 sm:bg-transparent sm:p-0">
             <input
               aria-label={`Requirement ${i + 1}`}
               className={`${inputClass} col-span-2 sm:col-span-1`}

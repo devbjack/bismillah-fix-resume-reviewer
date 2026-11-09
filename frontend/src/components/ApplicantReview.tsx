@@ -99,19 +99,22 @@ function RequirementRow({ result }: { result: ReqResult }) {
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((o) => !o)}
-        className="grid w-full cursor-pointer grid-cols-[auto_minmax(0,1fr)_4.5rem_auto] items-center gap-x-3 gap-y-2.5 rounded-lg px-2 py-3.5 text-left transition-colors duration-150 hover:bg-lavender/60 @2xl:grid-cols-[auto_minmax(0,1fr)_minmax(9rem,14rem)_4.5rem_auto]"
+        className="grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_4.5rem_auto] items-center gap-x-3 gap-y-2.5 rounded-lg px-2 py-3.5 text-left transition-colors duration-150 hover:bg-lavender/60 @2xl:grid-cols-[minmax(0,1fr)_minmax(9rem,14rem)_4.5rem_auto]"
       >
-        <TypeChip type={result.type} />
-        <span className="min-w-0 text-[15px] leading-snug">{result.text}</span>
+        {/* chip sits inline so the text wraps under it on narrow panels instead of squeezing beside it */}
+        <span className="min-w-0 text-[15px] leading-snug">
+          <TypeChip type={result.type} className="mr-2 align-[1px]" />
+          {result.text}
+        </span>
         <ProbabilityBar value={result.probability} met={met} />
         <span
-          className={`col-start-3 row-start-1 flex items-center justify-end gap-1.5 text-sm font-bold tabular-nums @2xl:col-start-auto @2xl:row-start-auto ${met ? 'text-success' : 'text-error'}`}
+          className={`col-start-2 row-start-1 flex items-center justify-end gap-1.5 text-sm font-bold tabular-nums @2xl:col-start-auto @2xl:row-start-auto ${met ? 'text-success' : 'text-error'}`}
         >
           {met ? <CircleCheck className="size-4" aria-hidden /> : <CircleX className="size-4" aria-hidden />}
           {pct}%<span className="sr-only">{met ? ', met' : ', not met'}</span>
         </span>
         <ChevronDown
-          className={`col-start-4 row-start-1 size-4 text-ink-mute transition-transform duration-200 @2xl:col-start-auto @2xl:row-start-auto ${open ? 'rotate-180' : ''}`}
+          className={`col-start-3 row-start-1 size-4 text-ink-mute transition-transform duration-200 @2xl:col-start-auto @2xl:row-start-auto ${open ? 'rotate-180' : ''}`}
           aria-hidden
         />
       </button>
