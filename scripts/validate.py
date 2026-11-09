@@ -1,4 +1,4 @@
-"""Step 0 gate: compare Julia's verdicts and ranking with hand labels in samples/labels.json."""
+"""Step 0 gate: compare the decider's verdicts and ranking with hand labels in samples/labels.json."""
 import json
 import sys
 import time
