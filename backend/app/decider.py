@@ -1,12 +1,12 @@
 import math
 from typing import Any, Callable, Protocol
 
-SYSTEM_PROMPT = (
-    "You check one job requirement against excerpts from a candidate's resume. "
-    "Answer 'yes' only if the excerpts show the candidate meets the requirement; otherwise answer 'no'. "
-    "Judge the exact skill, tool, degree or amount of experience asked for: different experience that "
-    "merely sounds similar (for example, years in another profession) does not count. "
-    "Answer with one word: yes or no."
+# Chosen by probing variants on qwen2.5:3b: a strict "only if" prompt made it answer "no" to clear matches.
+SYSTEM_PROMPT = "You are an HR assistant. Answer with one word: yes or no."
+USER_TEMPLATE = (
+    "Resume excerpts:\n{excerpts}\n\n"
+    'Question: is there evidence in these excerpts that the candidate meets the requirement "{requirement}"? '
+    "Mentioning the skill, tool or degree counts as evidence.\n\nAnswer (yes or no):"
 )
 
 
@@ -30,8 +30,7 @@ class OllamaDecider:
             model=self.model,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Requirement: {requirement}\n\nResume excerpts:\n{excerpts}\n\n"
-                                            "Does the candidate meet the requirement? Answer yes or no."},
+                {"role": "user", "content": USER_TEMPLATE.format(excerpts=excerpts, requirement=requirement)},
             ],
             options={"temperature": 0, "num_predict": 1},
             logprobs=True,
