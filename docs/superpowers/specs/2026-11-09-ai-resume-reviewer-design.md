@@ -78,9 +78,10 @@ The app advises; HRD decides. It never rejects or contacts applicants.
 |---|---|---|
 | Ask an LLM to score each resume 0–100 | Rejected | Small local models give unstable numbers that aren't comparable across resumes and are hard to explain |
 | Jev (TypeSafe AI decision model) | Rejected | Paid API |
-| Ollama 3B with typed JSON verdicts per requirement | Fallback | Works and explains, but ~10–20 s per resume and no probabilities |
+| Ollama 3B with typed JSON verdicts per requirement | Superseded | Coarse verdicts; replaced by the yes/no logprob approach below |
 | RRF over whole resumes as the final ranking | Rejected | Gives only relative ranks, not a meaningful 0–100 score; rewards keyword stuffing |
-| **Julia 1 per requirement, with RRF retrieval of evidence** | **Chosen** | Free (Apache 2.0), runs on CPU, returns typed probabilities like Jev; RRF keeps Julia's input short and provides evidence |
+| Julia 1 per requirement, with RRF retrieval of evidence | Rejected after Step 0 (2026-11-10) | Failed the gate: 48% verdict agreement, 2/5 top-5 overlap; it rated a graphic designer 99.7% on "3+ yrs Python" in every question framing |
+| **Ollama (qwen2.5:3b) yes/no per requirement, P(met) from token logprobs, with RRF retrieval of evidence** | **Chosen** | Free and local on the GPU; a real probability from the model's own yes/no likelihoods; RRF keeps the prompt short and provides evidence |
 
 ### Pipeline
 
@@ -91,7 +92,7 @@ The app advises; HRD decides. It never rejects or contacts applicants.
    - BM25 rank (`rank_bm25`, lowercase word tokens)
    - Embedding rank (`BAAI/bge-small-en-v1.5`, cosine similarity)
    - RRF: `score(c) = 1/(60 + rank_bm25(c)) + 1/(60 + rank_emb(c))`; keep the 3 highest.
-5. **Julia decision:** a `noul` question with `state` = the top 3 chunks joined, `instructions` = `Does the candidate meet this requirement: <text>?`, criteria `false` = "The text does not show the candidate meets this requirement", `true` = "The text shows the candidate meets this requirement". Output: P(true) = P(met). Evidence = the top-ranked chunk.
+5. **LLM decision:** Ollama `qwen2.5:3b`, temperature 0, one generated token, `top_logprobs=10`. The prompt gives the requirement and the top 3 chunks and asks for `yes` or `no`. P(met) = P(yes) / (P(yes) + P(no)) summed over case/space variants of each token; if neither appears, `yes` → 0.9, otherwise 0.1. Evidence = the top-ranked chunk.
 6. **Score:** `score = round(100 × Σ(weight × P(met)) / Σ(weight))`. `must_met` = must-haves with P ≥ 0.5. `flagged` = any must-have with P < 0.5. Ties are broken by `must_met`, then by file name.
 
 ## 7. Architecture
@@ -100,8 +101,7 @@ The app advises; HRD decides. It never rejects or contacts applicants.
 React app (Vite) ──JSON──► FastAPI API ──► SQLite (data/app.db)
   frontend/                  backend/
                                ├─ Ollama (qwen2.5:3b, GPU)
-                               ├─ bge-small-en-v1.5 (CPU)
-                               └─ Julia 1 (CPU)
+                               └─ bge-small-en-v1.5 (CPU)
 ```
 
 - **Frontend:** Vite + React + TypeScript, Tailwind, React Router, plain `fetch`. Polls `/status` every second while scoring.
@@ -117,7 +117,7 @@ React app (Vite) ──JSON──► FastAPI API ──► SQLite (data/app.db)
 | `requirements` | job text → list of `{text, type}` via Ollama |
 | `chunker` | text → list of chunk strings |
 | `retriever` | requirement + chunks → top 3 chunks (BM25 + embeddings + RRF) |
-| `decider` | requirement + chunks → P(met). Julia implementation; replaceable by an Ollama implementation with the same signature |
+| `decider` | requirement + chunks → P(met) via Ollama yes/no logprobs |
 | `scorer` | `[(type, weight, P)]` → score, must_met, must_total, flagged |
 | `store` | SQLite access for all tables |
 | `worker` | background thread that processes queued applicants one at a time |
@@ -165,7 +165,7 @@ Uploaded files are saved in `data/uploads/{job_id}/`.
 
 ## 9. Testing and validation
 
-### Step 0: Julia validation (before building UI)
+### Step 0: decider validation (before building UI)
 - **Sample set** in `samples/`: 1 job PDF and 10 resumes of fictional people (strong, medium and weak fits), plus 1 scanned PDF.
 - **Hand labels** in `samples/labels.json`: met/not met per requirement × resume, plus HRD's own ranking.
 - **`scripts/validate.py`** reports verdict agreement (P ≥ 0.5 vs label) and top-5 overlap.
@@ -186,17 +186,16 @@ Uploaded files are saved in `data/uploads/{job_id}/`.
 ## 10. Setup
 
 1. Install Ollama, then `ollama pull qwen2.5:3b`.
-2. `pip install -r backend/requirements.txt` (Julia is installed from its Hugging Face repo as described in its model card).
+2. `pip install -r backend/requirements.txt`.
 3. `npm install` and `npm run build` in `frontend/`.
-4. `python run.py`. Julia (~550 MB) and bge-small (~130 MB) download on first run.
+4. `python run.py`. bge-small (~130 MB) downloads on first run.
 
 ## 11. Risks and limitations
 
 | Risk | Mitigation |
 |---|---|
-| Julia 1 is a first release, unvalidated on resumes | Step 0 validation with a pass/fail threshold; swappable `decider` |
+| A 3B model misjudges some requirements | Step 0 validation with a pass/fail threshold; HRD sees evidence and decides |
 | Requirements summed across a resume ("3+ years" over several jobs) may not appear in any single chunk | Documented limitation; measured in Step 0 |
-| Julia is weak at arithmetic and world knowledge (its model card says so) | Same as above; HRD sees evidence and makes the final call |
-| Speed estimates are not measured yet | Speed check; Julia can use `device="cuda"` if CPU is too slow |
+| One LLM call per requirement is slower than an encoder | Speed check in Task 13; Ollama runs on the GPU |
 | A wrong requirement list makes every score wrong | HRD must confirm requirements before scoring |
 | Bias | Scoring only asks about the listed requirements; name, age, gender and photos are never a criterion. HRD decides |

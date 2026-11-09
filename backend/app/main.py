@@ -4,7 +4,7 @@ from pathlib import Path
 from sentence_transformers import SentenceTransformer
 
 from app.api import Deps, create_app
-from app.decider import MODEL_DIR, JuliaDecider
+from app.decider import OllamaDecider
 from app.req_extract import extract_requirements
 from app.store import Store
 from app.worker import Worker
@@ -20,7 +20,7 @@ def embed(texts: list[str]):
 
 
 store = Store(str(DATA / "app.db"))
-worker = Worker(store, DATA / "uploads", JuliaDecider(str(ROOT / MODEL_DIR)), embed)
+worker = Worker(store, DATA / "uploads", OllamaDecider(), embed)
 worker.start()
 app = create_app(Deps(store, DATA / "uploads", extract_requirements, worker),
                  static_dir=ROOT / "frontend" / "dist")

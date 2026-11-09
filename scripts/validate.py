@@ -9,16 +9,15 @@ sys.path.insert(0, str(ROOT / "backend"))
 
 from sentence_transformers import SentenceTransformer  # noqa: E402
 
-from app.decider import MODEL_DIR, JuliaDecider  # noqa: E402
+from app.decider import OllamaDecider  # noqa: E402
 from app.pdf_text import extract_text  # noqa: E402
 from app.pipeline import review  # noqa: E402
 
-device = sys.argv[1] if len(sys.argv) > 1 else "cpu"
 labels = json.loads((ROOT / "samples" / "labels.json").read_text(encoding="utf-8"))
 reqs = [{**r, "id": i} for i, r in enumerate(labels["requirements"])]
 st = SentenceTransformer("BAAI/bge-small-en-v1.5")
 embed = lambda texts: st.encode(texts, normalize_embeddings=True)  # noqa: E731
-decider = JuliaDecider(str(ROOT / MODEL_DIR), device=device)
+decider = OllamaDecider()
 
 agree = total = 0
 per_req = [[0, 0] for _ in reqs]
@@ -49,7 +48,7 @@ print(f"\nApp ranking:  {ranking}")
 print(f"Hand ranking: {labels['ranking']}")
 print(f"Verdict agreement: {agreement:.0%} (need >= 70%)")
 print(f"Top-5 overlap: {overlap}/5 (need >= 4)")
-print(f"Seconds per resume: {sum(times) / len(times):.1f} on {device}")
+print(f"Seconds per resume: {sum(times) / len(times):.1f} (Ollama qwen2.5:3b)")
 print("GATE:", "PASS" if agreement >= 0.7 and overlap >= 4 else "FAIL")
 print("\nTwo-column extraction check (r01, first 300 chars):")
 print(extract_text((ROOT / "samples" / "r01.pdf").read_bytes())[:300])

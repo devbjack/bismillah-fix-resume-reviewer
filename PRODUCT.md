@@ -13,7 +13,7 @@ One HRD (HR) staff member screening applicants for a single opening, on their ow
 An AI-powered resume reviewer that ranks applicants against a job's requirements and shows a 0–100 score with per-requirement evidence. It advises; HRD decides. Success: about 50 resumes ranked in ~5 minutes, a top 5 that matches HRD's own judgment, and every score traceable to requirements and evidence passages. Built as a course project.
 
 ## Positioning
-Free and fully local (no paid LLM, no cloud). Instead of asking an LLM for a vague overall score, it asks a decision model (Julia 1) one yes/no question per requirement and shows the probability plus the resume passage it used, so every number can be checked.
+Free and fully local (no paid LLM, no cloud). Instead of asking an LLM for a vague overall score, it asks a local LLM (Ollama, qwen2.5:3b) one yes/no question per requirement, reads the model's own probability of answering yes, and shows it plus the resume passage it used, so every number can be checked.
 
 ## Operating Context
 Flow: create a job from a PDF → the LLM (Ollama) extracts requirements → HRD edits and confirms them (text, must-have/nice-to-have, weight) → upload resumes → background scoring with progress → ranked list beside the selected applicant's review → CSV export. Jobs persist locally and can be deleted with their files.
