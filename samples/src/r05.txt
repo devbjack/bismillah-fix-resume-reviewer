@@ -1,0 +1,19 @@
+KEVIN HALIM
+kevin.halim@example.com | Jakarta
+
+SUMMARY
+Java backend engineer with 6 years of experience in enterprise banking systems.
+
+EXPERIENCE
+Senior Java Engineer — Bank Sentosa (2018 – 2024)
+- Built REST APIs with Java Spring Boot for core banking services.
+- Wrote complex queries and stored procedures in Oracle SQL.
+- Deployed Docker containers on Kubernetes in AWS.
+- Maintained GitLab CI/CD pipelines and wrote JUnit tests.
+- Occasionally wrote small Python scripts to automate log analysis.
+
+EDUCATION
+BSc Computer Science — Universitas Bina Nusantara, 2018
+
+SKILLS
+Java, Spring Boot, Oracle SQL, Docker, Kubernetes, AWS, GitLab CI, JUnit

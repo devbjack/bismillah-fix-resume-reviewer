@@ -1,0 +1,20 @@
+BACKEND DEVELOPER
+Nusantara Logistics — Jakarta (Hybrid)
+
+About the role
+We are hiring a Backend Developer to build and maintain the services behind our shipment tracking platform.
+
+Requirements
+- At least 3 years of professional experience developing software in Python
+- Experience with SQL databases such as PostgreSQL or MySQL
+- Experience designing and building REST APIs
+- Bachelor's degree in Computer Science or a related field
+
+Nice to have
+- Experience with Docker
+- Experience with a cloud platform such as AWS, GCP or Azure
+- Experience setting up CI/CD pipelines
+- Experience writing automated tests
+
+What we offer
+Competitive salary, health insurance, and a flexible hybrid schedule.

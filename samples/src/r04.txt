@@ -1,0 +1,18 @@
+SITI RAHMAWATI
+siti.rahma@example.com | Yogyakarta
+
+SUMMARY
+Junior backend developer with 2 years of Python experience.
+
+EXPERIENCE
+Junior Backend Developer — EduNext (2022 – 2024)
+- Built REST API endpoints with Django REST Framework for an online learning platform.
+- Wrote PostgreSQL queries and Django migrations.
+- Ran local development environments with Docker Compose.
+- Added unit tests with pytest for new features.
+
+EDUCATION
+BSc Computer Science — Universitas Gadjah Mada, 2022
+
+SKILLS
+Python, Django, PostgreSQL, Docker, pytest

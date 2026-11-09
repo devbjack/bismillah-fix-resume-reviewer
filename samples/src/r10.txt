@@ -1,0 +1,16 @@
+CITRA ANGGRAINI
+citra.ang@example.com | Malang
+
+PROFILE
+Fresh Computer Science graduate eager to start a career in software development.
+
+EDUCATION
+BSc Computer Science — Universitas Brawijaya, 2024
+Final project: a library catalogue web app written in Python with a MySQL database.
+
+COURSE PROJECTS
+- Python programming and data structures assignments
+- Database course project using MySQL
+
+SKILLS
+Python (academic), MySQL, HTML, CSS

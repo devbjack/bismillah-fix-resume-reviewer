@@ -1,0 +1,21 @@
+LINA KUSUMA
+lina.kusuma@example.com
+Semarang
+
+SKILLS
+Python
+pandas, NumPy
+PostgreSQL
+Tableau
+Excel
+
+EDUCATION
+BSc Computer Science
+Universitas Diponegoro, 2019
+---COLUMN---
+PROFILE
+Data analyst with 4 years of professional experience using Python for reporting and analysis.
+
+EXPERIENCE
+Data Analyst — RetailMaju (2020 – 2024)
+Wrote Python scripts with pandas to clean and analyze sales data. Queried PostgreSQL databases to build weekly dashboards in Tableau. Presented insights to the marketing team.

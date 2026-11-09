@@ -37,6 +37,16 @@ def test_extract_text_rejects_encrypted_pdf():
         extract_text(data)
 
 
+def test_two_column_text_is_not_interleaved():
+    doc = fitz.open()
+    page = doc.new_page()
+    page.insert_textbox(fitz.Rect(36, 40, 186, 400), "SKILLS\nPython\nDocker")
+    page.insert_textbox(fitz.Rect(206, 40, 576, 400), "EXPERIENCE\nBackend Engineer at Acme")
+    text = extract_text(doc.tobytes())
+    assert "SKILLS\nPython\nDocker" in text
+    assert "EXPERIENCE\nBackend Engineer at Acme" in text
+
+
 def test_is_pdf():
     assert is_pdf(pdf_with("x"))
     assert not is_pdf(b"PK\x03\x04")

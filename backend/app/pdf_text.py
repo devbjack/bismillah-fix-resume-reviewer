@@ -23,5 +23,10 @@ def is_pdf(data: bytes) -> bool:
 
 def extract_text(data: bytes) -> str:
     doc = _open(data)
-    # sort=True reads blocks by position, which keeps two-column resumes in order
-    return "\n".join(page.get_text(sort=True) for page in doc)
+    # Sorted text *blocks* (not lines): plain sort=True merges same-height lines across columns
+    parts = []
+    for page in doc:
+        for block in page.get_text("blocks", sort=True):
+            if block[6] == 0:  # text block, not image
+                parts.append(block[4].strip())
+    return "\n\n".join(p for p in parts if p)

@@ -1,0 +1,18 @@
+MAYA SARI
+maya.sari@example.com | Bandung
+
+PROFILE
+Python developer with 4 years of experience building APIs for fintech products.
+
+EXPERIENCE
+Backend Developer — DanaKita (2020 – 2024)
+- Built REST APIs with FastAPI for loan applications and payment processing.
+- Designed MySQL schemas and optimized slow queries, cutting report time by 60%.
+- Packaged services as Docker images and deployed them on Google Cloud Run (GCP).
+- Wrote automated unit tests with pytest for all new endpoints.
+
+EDUCATION
+Bachelor of Information Systems — Institut Teknologi Bandung, 2020
+
+SKILLS
+Python, FastAPI, MySQL, Docker, Google Cloud Platform, pytest, Git

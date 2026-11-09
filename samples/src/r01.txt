@@ -1,0 +1,27 @@
+ANDI PRATAMA
+andi.pratama@example.com
+Jakarta
+
+SKILLS
+Python, Django, FastAPI
+PostgreSQL, Redis
+Docker, AWS (EC2, RDS, S3)
+GitHub Actions
+pytest
+
+EDUCATION
+BSc Computer Science
+Universitas Indonesia, 2019
+
+LANGUAGES
+English, Indonesian
+---COLUMN---
+SUMMARY
+Backend engineer with 5 years of professional Python experience building high-traffic web services.
+
+EXPERIENCE
+Senior Backend Engineer — Kirim Cepat (2022 – present)
+Designed REST APIs in Django REST Framework serving 2M requests per day. Migrated PostgreSQL schemas with zero downtime. Containerized all services with Docker and deployed them to AWS ECS. Built CI/CD pipelines in GitHub Actions that run the pytest suite on every pull request.
+
+Backend Engineer — Tokoku (2019 – 2022)
+Built Python microservices with FastAPI and PostgreSQL. Wrote unit and integration tests with pytest, raising coverage from 40% to 85%.

@@ -1,0 +1,22 @@
+RAFAEL GUNAWAN
+rafael.g@example.com
+Surabaya
+
+TECHNICAL SKILLS
+Python
+Flask
+PostgreSQL
+Docker
+Microsoft Azure
+Jenkins
+
+EDUCATION
+Bachelor of Engineering, Software Engineering
+Institut Teknologi Sepuluh Nopember, 2018
+---COLUMN---
+WORK HISTORY
+Backend Developer — Logistik Nusantara Digital (2021 – 2024)
+Developed Python services in Flask that power warehouse management. Designed REST APIs consumed by the mobile app. Maintained PostgreSQL databases with 200 tables. Set up Jenkins CI/CD pipelines that build Docker images and deploy them to Microsoft Azure.
+
+Junior Python Developer — Studio Kode (2018 – 2020)
+Wrote Python scripts and small Flask web apps for clients. Worked with PostgreSQL and MySQL.

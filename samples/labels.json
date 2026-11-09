@@ -1,0 +1,26 @@
+{
+  "_note": "DRAFT labels written by Claude. Order of each label list matches 'requirements'. 1 = met, 0 = not met. Please correct.",
+  "requirements": [
+    {"text": "At least 3 years of professional experience developing software in Python", "type": "must", "weight": 2},
+    {"text": "Experience with SQL databases such as PostgreSQL or MySQL", "type": "must", "weight": 2},
+    {"text": "Experience designing and building REST APIs", "type": "must", "weight": 2},
+    {"text": "Bachelor's degree in Computer Science or a related field", "type": "must", "weight": 2},
+    {"text": "Experience with Docker", "type": "nice", "weight": 1},
+    {"text": "Experience with a cloud platform such as AWS, GCP or Azure", "type": "nice", "weight": 1},
+    {"text": "Experience setting up CI/CD pipelines", "type": "nice", "weight": 1},
+    {"text": "Experience writing automated tests", "type": "nice", "weight": 1}
+  ],
+  "labels": {
+    "r01": [1, 1, 1, 1, 1, 1, 1, 1],
+    "r02": [1, 1, 1, 1, 1, 1, 0, 1],
+    "r03": [1, 1, 1, 1, 1, 1, 1, 0],
+    "r04": [0, 1, 1, 1, 1, 0, 0, 1],
+    "r05": [0, 1, 1, 1, 1, 1, 1, 1],
+    "r06": [1, 1, 0, 1, 0, 0, 0, 0],
+    "r07": [0, 1, 1, 0, 1, 1, 1, 1],
+    "r08": [0, 0, 0, 0, 0, 0, 0, 0],
+    "r09": [0, 0, 0, 0, 0, 0, 0, 0],
+    "r10": [0, 1, 0, 1, 0, 0, 0, 0]
+  },
+  "ranking": ["r01", "r02", "r03", "r05", "r04", "r06", "r07", "r10", "r08", "r09"]
+}

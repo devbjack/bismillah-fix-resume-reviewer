@@ -1,0 +1,18 @@
+TOMMY WIJAYA
+tommy.w@example.com | Bali
+
+SUMMARY
+Node.js backend developer with 4 years of experience in e-commerce.
+
+EXPERIENCE
+Backend Developer — BeliYuk (2020 – 2024)
+- Built REST APIs with Node.js and Express for the checkout service.
+- Used MongoDB and PostgreSQL databases.
+- Deployed Docker containers to AWS with GitHub Actions CI/CD pipelines.
+- Wrote automated tests with Jest.
+
+EDUCATION
+Full-Stack Web Development Bootcamp — Hacktiv8, 2020
+
+SKILLS
+JavaScript, TypeScript, Node.js, Express, MongoDB, PostgreSQL, Docker, AWS, Jest
