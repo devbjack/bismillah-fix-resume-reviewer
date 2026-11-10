@@ -26,7 +26,7 @@ export function JobsPage() {
         </p>
         <div className="mt-6">
           {loadError ? (
-            <Notice tone="error">Couldn't load jobs: {loadError}. Is the backend running?</Notice>
+            <Notice>Couldn't load jobs: {loadError}. Is the backend running?</Notice>
           ) : jobs === null ? (
             <ul aria-label="Loading jobs" className="divide-y divide-hairline border-y border-hairline">
               {[0, 1, 2].map((i) => (
@@ -130,7 +130,7 @@ function NewJobForm() {
             <FileDrop label="Choose or drop the PDF" hint="Text PDF, up to 10 MB" onFiles={(f) => setFile(f[0] ?? null)} />
           )}
         </div>
-        {error && <Notice tone="error">{error}</Notice>}
+        {error && <Notice>{error}</Notice>}
         <Button type="submit" busy={busy} disabled={!name.trim() || !file}>
           {busy ? 'Reading requirements…' : 'Create job'}
         </Button>

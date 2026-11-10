@@ -27,7 +27,7 @@ export function ApplicantReview({ applicantId, version }: Props) {
     }
   }, [applicantId, version])
 
-  if (error) return <Notice tone="error">Couldn't load this applicant: {error}</Notice>
+  if (error) return <Notice>Couldn't load this applicant: {error}</Notice>
   if (!detail || detail.id !== applicantId) return <ReviewSkeleton />
 
   return (
@@ -58,7 +58,7 @@ export function ApplicantReview({ applicantId, version }: Props) {
       )}
       {detail.status === 'failed' && (
         <div className="mt-6">
-          <Notice tone="error">
+          <Notice>
             Couldn't score this resume: {detail.error}. It stays in the list so nothing is silently dropped.
           </Notice>
         </div>

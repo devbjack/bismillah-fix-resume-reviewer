@@ -6,6 +6,5 @@ rank-bm25
 sentence-transformers
 ollama
 numpy
-huggingface_hub
 pytest
 httpx

@@ -20,16 +20,24 @@ export function JobPage() {
   const [rows, setRows] = useState<RankRow[]>([])
   const [status, setStatus] = useState<Status>({ done: 0, total: 0 })
   const [deleting, setDeleting] = useState(false)
+  const [syncError, setSyncError] = useState<string | null>(null)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
+  // never rejects: a failed refresh shows a notice instead of freezing the progress silently
   const refresh = useCallback(async () => {
-    const [s, r] = await Promise.all([getStatus(jobId), getRanking(jobId)])
-    setStatus(s)
-    setRows(r)
+    try {
+      const [s, r] = await Promise.all([getStatus(jobId), getRanking(jobId)])
+      setStatus(s)
+      setRows(r)
+      setSyncError(null)
+    } catch (e) {
+      setSyncError((e as Error).message)
+    }
   }, [jobId])
 
   useEffect(() => {
     getJob(jobId).then(setJob, () => setNotFound(true))
-    refresh().catch(() => {})
+    refresh()
   }, [jobId, refresh])
 
   // poll once a second while resumes are still being scored
@@ -37,21 +45,27 @@ export function JobPage() {
   const scoring = status.done < status.total || rows.some((r) => r.status === 'queued')
   useEffect(() => {
     if (!scoring) return
-    const t = setInterval(() => refresh().catch(() => {}), 1000)
+    const t = setInterval(refresh, 1000)
     return () => clearInterval(t)
   }, [scoring, refresh])
 
   async function remove() {
     if (!job || !confirm(`Delete "${job.name}" and all ${status.total} uploaded resumes? This can't be undone.`)) return
     setDeleting(true)
-    await deleteJob(job.id)
-    navigate('/')
+    setDeleteError(null)
+    try {
+      await deleteJob(job.id)
+      navigate('/')
+    } catch (e) {
+      setDeleteError((e as Error).message)
+      setDeleting(false)
+    }
   }
 
   if (notFound) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <Notice tone="error">This job doesn't exist anymore.</Notice>
+        <Notice>This job doesn't exist anymore.</Notice>
         <Link to="/" className="mt-4 inline-block text-link hover:text-link-hover hover:underline">
           Back to jobs
         </Link>
@@ -60,7 +74,9 @@ export function JobPage() {
   }
   if (!job) return <div className="mx-auto mt-10 h-8 max-w-7xl animate-pulse rounded bg-hairline px-4" aria-label="Loading job" />
 
-  const selectedId = applicantParam ?? rows.find((r) => r.status === 'done')?.id ?? rows[0]?.id ?? null
+  // ignore a URL applicant that isn't in this job (old or foreign link) and fall back to the top one
+  const fromUrl = rows.some((r) => r.id === applicantParam) ? applicantParam : null
+  const selectedId = fromUrl ?? rows.find((r) => r.status === 'done')?.id ?? rows[0]?.id ?? null
   const selected = rows.find((r) => r.id === selectedId)
 
   return (
@@ -84,17 +100,19 @@ export function JobPage() {
       </div>
 
       <div className="mt-6 flex flex-col gap-5">
-        {warning && job.status === 'draft' && <Notice tone="error">{warning}</Notice>}
+        {syncError && <Notice>Lost contact with the app: {syncError}. Is it still running?</Notice>}
+        {deleteError && <Notice>Couldn't delete this job: {deleteError}</Notice>}
+        {warning && job.status === 'draft' && <Notice>{warning}</Notice>}
         <RequirementsEditor
           key={job.status + (job.requirements ?? []).map((r) => r.id).join(',')}
           job={job}
           hasApplicants={status.total > 0}
           onSaved={(saved) => {
             setJob(saved)
-            refresh().catch(() => {})
+            refresh()
           }}
         />
-        {job.status === 'confirmed' && <ResumeUpload jobId={job.id} status={status} onUploaded={() => refresh().catch(() => {})} />}
+        {job.status === 'confirmed' && <ResumeUpload jobId={job.id} status={status} onUploaded={refresh} />}
       </div>
 
       {rows.length > 0 && (

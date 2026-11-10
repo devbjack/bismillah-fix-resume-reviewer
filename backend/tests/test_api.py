@@ -1,5 +1,6 @@
 import csv
 import io
+from pathlib import Path
 
 import pymupdf as fitz
 import numpy as np
@@ -238,6 +239,11 @@ def test_spa_fallback(tmp_path, env):
     store = Store(str(tmp_path / "other.db"))
     client = TestClient(create_app(Deps(store, uploads, lambda t: [], worker), static_dir=static))
     assert "app" in client.get("/jobs/1/applicants/2").text
+    # path traversal must never serve files outside the build folder
+    for url in ("/..%2f..%2fother.db", "/..%2fother.db", "/%2e%2e/%2e%2e/other.db"):
+        r = client.get(url)
+        assert r.status_code == 200 and r.text == "<html>app</html>", url
+    assert client.get("/x%00y").text == "<html>app</html>"
     r = client.get("/api/nope")
     assert r.status_code == 404 and r.headers["content-type"].startswith("application/json")
 
@@ -251,3 +257,32 @@ def test_export_csv_escapes_formula_cells(env):
     rows = list(csv.reader(io.StringIO(client.get(f"/api/jobs/{job['id']}/export.csv").text.lstrip("﻿"))))
     assert rows[0][6] == "'=SUM(1,1) skills"
     assert rows[1][1] == "'=HYPERLINK(evil).pdf"
+
+
+def test_upload_write_failure_marks_failed_and_scores_the_rest(env, monkeypatch):
+    client, _, worker, *_ = env
+    job = make_job(client)
+    confirm(client, job["id"])
+    real_write = Path.write_bytes
+    calls = []
+
+    def flaky_write(self, data):
+        calls.append(self.name)
+        if len(calls) == 2:
+            raise OSError("disk full")
+        return real_write(self, data)
+    monkeypatch.setattr(Path, "write_bytes", flaky_write)
+    body = upload(client, job["id"], [(f"{n}.pdf", pdf_with("Python"), "application/pdf") for n in ("a", "b", "c")]).json()
+    monkeypatch.undo()
+    assert [a["filename"] for a in body["accepted"]] == ["a.pdf", "c.pdf"]
+    assert body["rejected"] == [{"filename": "b.pdf", "reason": "b.pdf could not be saved: disk full"}]
+    worker.join_idle(10)
+    statuses = {r["filename"]: r["status"] for r in client.get(f"/api/jobs/{job['id']}/ranking").json()}
+    assert statuses == {"a.pdf": "done", "b.pdf": "failed", "c.pdf": "done"}
+
+
+def test_create_job_from_scanned_pdf_warns(env):
+    client, *_ = env
+    body = client.post("/api/jobs", data={"name": "B"}, files={"file": ("scan.pdf", blank_pdf(), "application/pdf")}).json()
+    assert body["job"]["requirements"] == []
+    assert body["warning"] == "No text found in this PDF — type the requirements yourself."

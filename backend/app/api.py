@@ -18,6 +18,7 @@ MAX_FILES = 100
 MAX_BYTES = 10 * 1024 * 1024
 DEFAULT_WEIGHT = {"must": 2, "nice": 1}
 OLLAMA_DOWN = "Couldn't reach Ollama — start it, or type the requirements yourself."
+NO_JOB_TEXT = "No text found in this PDF — type the requirements yourself."
 
 
 @dataclass
@@ -75,11 +76,12 @@ def create_app(deps: Deps, static_dir: Path | None = None) -> FastAPI:
             raise HTTPException(400, f"{file.filename}: not a readable PDF of 10 MB or less")
         job_text = extract_text(data)
         job_id = store.create_job(name.strip(), job_text)
-        warning = None
-        try:
-            reqs = deps.extract(job_text) if job_text.strip() else []
-        except RequirementsUnavailable:
-            reqs, warning = [], OLLAMA_DOWN
+        reqs, warning = [], NO_JOB_TEXT
+        if job_text.strip():
+            try:
+                reqs, warning = deps.extract(job_text), None
+            except RequirementsUnavailable:
+                warning = OLLAMA_DOWN
         store.set_requirements(job_id, [{**r, "weight": DEFAULT_WEIGHT[r["type"]]} for r in reqs], confirm=False)
         return {"job": _public_job(store.get_job(job_id)), "warning": warning}
 
@@ -119,10 +121,15 @@ def create_app(deps: Deps, static_dir: Path | None = None) -> FastAPI:
                 rejected.append({"filename": name, "reason": f"{name} is not a readable PDF"})
             else:
                 applicant_id = store.add_applicant(job_id, name)
-                # the original name is only a label; the disk path comes from the id
-                (folder / f"{applicant_id}.pdf").write_bytes(data)
+                try:
+                    # the original name is only a label; the disk path comes from the id
+                    (folder / f"{applicant_id}.pdf").write_bytes(data)
+                except OSError as e:
+                    store.mark_failed(applicant_id, f"Could not save the file: {e}")
+                    rejected.append({"filename": name, "reason": f"{name} could not be saved: {e}"})
+                    continue
+                deps.worker.enqueue([applicant_id])
                 accepted.append({"id": applicant_id, "filename": name})
-        deps.worker.enqueue([a["id"] for a in accepted])
         return {"accepted": accepted, "rejected": rejected}
 
     @app.get("/api/jobs/{job_id}/status")
@@ -177,9 +184,12 @@ def create_app(deps: Deps, static_dir: Path | None = None) -> FastAPI:
         def spa(path: str):
             if path == "api" or path.startswith("api/"):
                 raise HTTPException(404, "Not found")
-            file = (root / path).resolve()
-            if path and file.is_file() and file.is_relative_to(root):
-                return FileResponse(file)
+            try:
+                file = (root / path).resolve()
+                if path and file.is_file() and file.is_relative_to(root):
+                    return FileResponse(file)
+            except (ValueError, OSError):  # e.g. a null byte in the URL
+                pass
             return FileResponse(root / "index.html")
 
     return app

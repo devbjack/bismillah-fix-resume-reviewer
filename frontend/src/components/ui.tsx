@@ -51,10 +51,9 @@ export function TypeChip({ type, className = '' }: { type: 'must' | 'nice'; clas
   )
 }
 
-export function Notice({ tone = 'info', children }: { tone?: 'info' | 'error'; children: ReactNode }) {
-  const styles = tone === 'error' ? 'bg-error/8 text-error' : 'bg-lavender text-ink'
+export function Notice({ children }: { children: ReactNode }) {
   return (
-    <div role={tone === 'error' ? 'alert' : 'status'} className={`rounded-lg px-4 py-3 text-sm leading-relaxed ${styles}`}>
+    <div role="alert" className="rounded-lg bg-error/8 px-4 py-3 text-sm leading-relaxed text-error">
       {children}
     </div>
   )

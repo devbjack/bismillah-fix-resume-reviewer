@@ -6,16 +6,12 @@ import sqlite3
 import threading
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING
 
-from app.decider import DeciderUnavailable
+from app.decider import Decider, DeciderUnavailable
 from app.pdf_text import extract_text
 from app.pipeline import NoTextError, review
 from app.retriever import Embed
 from app.store import Store
-
-if TYPE_CHECKING:
-    from app.decider import Decider
 
 log = logging.getLogger(__name__)
 NO_TEXT = "No text found — scanned PDF?"

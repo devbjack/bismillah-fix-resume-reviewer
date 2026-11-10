@@ -76,12 +76,12 @@ export function ResumeUpload({ jobId, status, onUploaded }: Props) {
 
       {error && (
         <div className="mt-4">
-          <Notice tone="error">{error}</Notice>
+          <Notice>{error}</Notice>
         </div>
       )}
       {result && result.rejected.length > 0 && (
         <div className="mt-4">
-          <Notice tone="error">
+          <Notice>
             <p className="font-semibold">
               {result.rejected.length} file{result.rejected.length > 1 ? 's' : ''} skipped
               {result.accepted.length > 0 && `, ${result.accepted.length} added`}

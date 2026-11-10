@@ -151,7 +151,7 @@ function EditorForm({ job, hasApplicants, onCancel, onSaved }: Props & { onCance
 
       {error && (
         <div className="mt-4">
-          <Notice tone="error">{error}</Notice>
+          <Notice>{error}</Notice>
         </div>
       )}
       <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-hairline pt-5">

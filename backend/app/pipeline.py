@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
 from app.chunker import chunk_text
+from app.decider import Decider
 from app.retriever import Embed, ResumeIndex
 from app.scorer import ScoreResult, score
-
-if TYPE_CHECKING:
-    from app.decider import Decider
 
 
 class NoTextError(Exception):
