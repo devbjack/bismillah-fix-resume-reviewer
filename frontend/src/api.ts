@@ -97,3 +97,18 @@ export const getRanking = (jobId: number) => request<RankRow[]>(`/api/jobs/${job
 export const getApplicant = (id: number) => request<ApplicantDetail>(`/api/applicants/${id}`)
 export const deleteJob = (id: number) => request<void>(`/api/jobs/${id}`, { method: 'DELETE' })
 export const exportUrl = (jobId: number) => `/api/jobs/${jobId}/export.csv`
+
+export interface Summary {
+  total: number
+  scored: number
+  queued: number
+  failed: number
+  qualified: number
+  average_score: number | null
+  best: { id: number; filename: string; score: number } | null
+  histogram: number[]
+  coverage: { requirement_id: number; text: string; type: ReqType; met: number; scored: number }[]
+  top: { id: number; filename: string; score: number; must_met: number; must_total: number }[]
+}
+
+export const getSummary = (jobId: number) => request<Summary>(`/api/jobs/${jobId}/summary`)
