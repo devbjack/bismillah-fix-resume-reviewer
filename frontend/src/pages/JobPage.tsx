@@ -1,5 +1,5 @@
 import { ArrowLeft, Download, Settings2, Trash2 } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router'
 import { deleteJob, exportUrl, getJob, getRanking, getStatus, type Job, type RankRow, type Status } from '../api'
 import { ApplicantList } from '../components/ApplicantList'
@@ -28,16 +28,20 @@ export function JobPage() {
   const [syncError, setSyncError] = useState<string | null>(null)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  // never rejects: a failed refresh shows a notice instead of freezing the progress silently
+  // never rejects: a failed refresh shows a notice instead of freezing the progress silently.
+  // Responses can arrive out of order (a poll sent just before a re-save); only the newest one counts.
+  const latest = useRef(0)
   const refresh = useCallback(async () => {
+    const mine = ++latest.current
     try {
       const [s, r] = await Promise.all([getStatus(jobId), getRanking(jobId)])
+      if (mine !== latest.current) return
       setStatus(s)
       setRows(r)
       setRowsLoaded(true)
       setSyncError(null)
     } catch (e) {
-      setSyncError((e as Error).message)
+      if (mine === latest.current) setSyncError((e as Error).message)
     }
   }, [jobId])
 
@@ -104,7 +108,7 @@ export function JobPage() {
             All jobs
           </Link>
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <h1 className="mr-auto min-w-0 text-[26px] font-bold leading-tight tracking-[-0.2px]">{job.name}</h1>
+            <h1 className="mr-auto min-w-0 text-[26px] [overflow-wrap:anywhere] font-bold leading-tight tracking-[-0.2px]">{job.name}</h1>
             {status.total > 0 && scoring && (
               <div className="flex w-44 flex-col gap-1">
                 <span className="text-xs tabular-nums text-ink-mute">

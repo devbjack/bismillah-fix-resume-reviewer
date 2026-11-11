@@ -225,3 +225,22 @@ def test_summary_best_and_average(store):
     s = store.summary(job)
     assert s["best"] == {"id": best_id, "filename": "best.pdf", "score": 95}
     assert s["average_score"] == 77.5
+
+
+def test_summary_coverage_never_exceeds_scored_when_worker_saves_mid_read(store, monkeypatch):
+    """The worker can finish a resume between summary's reads; met must stay within that snapshot."""
+    job = job_with(store)
+    scored(store, job, "a.pdf", 80, [0.9, 0.9, 0.9])
+    late = store.add_applicant(job, "late.pdf")
+    reqs = store.get_job(job)["requirements"]
+    real_ranking = Store.ranking
+
+    def ranking_then_worker_saves(self, job_id):
+        rows = real_ranking(self, job_id)
+        if store.get_applicant(late)["status"] == "queued":
+            store.save_result(late, ScoreResult(90, 2, 2, False), [ReqResult(r["id"], 0.9, "ev") for r in reqs])
+        return rows
+    monkeypatch.setattr(Store, "ranking", ranking_then_worker_saves)
+    s = store.summary(job)
+    assert s["scored"] == 1
+    assert all(c["met"] <= c["scored"] for c in s["coverage"]), s["coverage"]

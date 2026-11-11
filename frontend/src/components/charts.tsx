@@ -114,7 +114,7 @@ export function CoverageBars({ rows }: { rows: Summary['coverage'] }) {
         return (
           <li key={r.requirement_id} className="flex flex-col gap-1.5">
             <div className="flex items-start justify-between gap-3 text-sm">
-              <span className="min-w-0 leading-snug">
+              <span className="min-w-0 leading-snug [overflow-wrap:anywhere]">
                 <TypeChip type={r.type} className="mr-2 align-[1px]" />
                 {r.text}
               </span>

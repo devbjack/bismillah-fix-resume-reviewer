@@ -155,16 +155,19 @@ class Store:
         histogram = [0] * 10
         for r in scored:
             histogram[min(r["score"] // 10, 9)] += 1
+        # count only the applicants in the `scored` snapshot above: the worker may finish
+        # another resume between the two reads, which would otherwise show "11 of 10"
+        scored_ids = {r["id"] for r in scored}
+        coverage: dict[int, dict] = {}
         with self._conn() as c:
-            coverage = [dict(r) for r in c.execute(
-                "SELECT q.id AS requirement_id, q.text, q.type, "
-                "COALESCE(SUM(r.probability >= 0.5 AND a.status = 'done'), 0) AS met "
-                "FROM requirements q "
+            for q in c.execute(
+                "SELECT q.id, q.text, q.type, r.applicant_id, r.probability FROM requirements q "
                 "LEFT JOIN results r ON r.requirement_id = q.id "
-                "LEFT JOIN applicants a ON a.id = r.applicant_id "
-                "WHERE q.job_id = ? GROUP BY q.id ORDER BY q.type = 'must' DESC, q.position", (job_id,))]
-        for cov in coverage:
-            cov["scored"] = len(scored)
+                "WHERE q.job_id = ? ORDER BY q.type = 'must' DESC, q.position", (job_id,)):
+                cov = coverage.setdefault(q["id"], {"requirement_id": q["id"], "text": q["text"], "type": q["type"],
+                                                    "met": 0, "scored": len(scored)})
+                if q["applicant_id"] in scored_ids and q["probability"] >= 0.5:
+                    cov["met"] += 1
         return {
             "total": len(rows),
             "scored": len(scored),
@@ -174,6 +177,6 @@ class Store:
             "average_score": round(sum(r["score"] for r in scored) / len(scored), 1) if scored else None,
             "best": {k: scored[0][k] for k in ("id", "filename", "score")} if scored else None,
             "histogram": histogram,
-            "coverage": coverage,
+            "coverage": list(coverage.values()),
             "top": [{k: r[k] for k in ("id", "filename", "score", "must_met", "must_total")} for r in qualified[:5]],
         }
