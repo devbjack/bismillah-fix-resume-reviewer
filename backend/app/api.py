@@ -142,6 +142,11 @@ def create_app(deps: Deps, static_dir: Path | None = None) -> FastAPI:
         job_or_404(job_id)
         return _with_rank(store.ranking(job_id))
 
+    @app.get("/api/jobs/{job_id}/summary")
+    def summary(job_id: int):
+        job_or_404(job_id)
+        return store.summary(job_id)
+
     @app.get("/api/applicants/{applicant_id}")
     def applicant(applicant_id: int):
         app_ = store.get_applicant(applicant_id)

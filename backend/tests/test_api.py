@@ -286,3 +286,15 @@ def test_create_job_from_scanned_pdf_warns(env):
     body = client.post("/api/jobs", data={"name": "B"}, files={"file": ("scan.pdf", blank_pdf(), "application/pdf")}).json()
     assert body["job"]["requirements"] == []
     assert body["warning"] == "No text found in this PDF — type the requirements yourself."
+
+
+def test_summary_endpoint(env):
+    client, _, worker, *_ = env
+    job = make_job(client)
+    confirm(client, job["id"])
+    upload(client, job["id"], [("a.pdf", pdf_with("Python"), "application/pdf")])
+    worker.join_idle(10)
+    s = client.get(f"/api/jobs/{job['id']}/summary").json()
+    assert set(s) == {"total", "scored", "queued", "failed", "qualified", "average_score", "best", "histogram", "coverage", "top"}
+    assert s["scored"] == 1 and s["qualified"] == 1 and s["best"]["filename"] == "a.pdf"
+    assert client.get("/api/jobs/999/summary").status_code == 404

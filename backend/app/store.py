@@ -146,3 +146,34 @@ class Store:
                 f"SELECT {APPLICANT_COLS} FROM applicants WHERE job_id = ? ORDER BY "
                 "CASE status WHEN 'done' THEN 0 WHEN 'queued' THEN 1 ELSE 2 END, "
                 "score DESC, must_met DESC, filename ASC, id ASC", (job_id,))]
+
+    def summary(self, job_id: int) -> dict:
+        """Dashboard numbers for one job. Qualified = scored and every must-have met."""
+        rows = self.ranking(job_id)
+        scored = [r for r in rows if r["status"] == "done"]
+        qualified = [r for r in scored if r["must_met"] == r["must_total"]]
+        histogram = [0] * 10
+        for r in scored:
+            histogram[min(r["score"] // 10, 9)] += 1
+        with self._conn() as c:
+            coverage = [dict(r) for r in c.execute(
+                "SELECT q.id AS requirement_id, q.text, q.type, "
+                "COALESCE(SUM(r.probability >= 0.5 AND a.status = 'done'), 0) AS met "
+                "FROM requirements q "
+                "LEFT JOIN results r ON r.requirement_id = q.id "
+                "LEFT JOIN applicants a ON a.id = r.applicant_id "
+                "WHERE q.job_id = ? GROUP BY q.id ORDER BY q.type = 'must' DESC, q.position", (job_id,))]
+        for cov in coverage:
+            cov["scored"] = len(scored)
+        return {
+            "total": len(rows),
+            "scored": len(scored),
+            "queued": sum(r["status"] == "queued" for r in rows),
+            "failed": sum(r["status"] == "failed" for r in rows),
+            "qualified": len(qualified),
+            "average_score": round(sum(r["score"] for r in scored) / len(scored), 1) if scored else None,
+            "best": {k: scored[0][k] for k in ("id", "filename", "score")} if scored else None,
+            "histogram": histogram,
+            "coverage": coverage,
+            "top": [{k: r[k] for k in ("id", "filename", "score", "must_met", "must_total")} for r in qualified[:5]],
+        }
