@@ -91,13 +91,14 @@ export function JobPage() {
   const pct = status.total ? Math.round((100 * status.done) / status.total) : 0
 
   return (
-    <div className="md:grid md:h-[calc(100dvh-3.5rem)] md:grid-cols-[300px_minmax(0,1fr)]">
+    // one minmax(0,1fr) row caps both columns at the window height so each scrolls on its own
+    <div className="md:grid md:h-[calc(100dvh-3.5rem)] md:grid-cols-[300px_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)]">
       <aside className="flex max-h-[40vh] flex-col border-b border-hairline bg-cream md:max-h-none md:border-b-0 md:border-r">
         <ApplicantList jobId={jobId} rows={rows} selectedId={selected?.id ?? null} overviewSelected={view === 'overview'} />
       </aside>
 
       <div className="min-w-0 md:overflow-y-auto">
-        <header className="sticky top-0 z-10 border-b border-hairline bg-white/95 px-5 py-4 backdrop-blur-sm sm:px-8">
+        <header className="z-10 border-b md:sticky md:top-0 border-hairline bg-white/95 px-5 py-4 backdrop-blur-sm sm:px-8">
           <Link to="/" className="inline-flex items-center gap-1.5 rounded-sm text-sm text-link hover:text-link-hover hover:underline">
             <ArrowLeft className="size-4" aria-hidden />
             All jobs

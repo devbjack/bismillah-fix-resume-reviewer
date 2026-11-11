@@ -86,7 +86,9 @@ export function Overview({ jobId, version }: Props) {
           <CoverageBars rows={s.coverage} />
         </Panel>
         <Panel title="Top 5 qualified">
-          {s.top.length === 0 ? (
+          {s.scored === 0 ? (
+            <p className="text-sm text-ink-mute">No applicants scored yet.</p>
+          ) : s.top.length === 0 ? (
             <p className="text-sm text-ink-mute">No one meets every must-have yet. Applicants marked ⚠ in the list are the closest.</p>
           ) : (
             <ol className="divide-y divide-hairline">
