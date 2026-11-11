@@ -15,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<JobsPage />} />
           <Route path="/jobs/:jobId" element={<JobPage />} />
           <Route path="/jobs/:jobId/applicants/:applicantId" element={<JobPage />} />
+          <Route path="/jobs/:jobId/setup" element={<JobPage />} />
         </Routes>
       </AppShell>
     </BrowserRouter>

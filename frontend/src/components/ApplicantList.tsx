@@ -1,4 +1,4 @@
-import { CircleX, LoaderCircle, TriangleAlert } from 'lucide-react'
+import { CircleX, LayoutDashboard, LoaderCircle, TriangleAlert } from 'lucide-react'
 import { Link } from 'react-router'
 import type { RankRow } from '../api'
 
@@ -6,19 +6,33 @@ interface Props {
   jobId: number
   rows: RankRow[]
   selectedId: number | null
+  overviewSelected: boolean
 }
 
-export function ApplicantList({ jobId, rows, selectedId }: Props) {
+export function ApplicantList({ jobId, rows, selectedId, overviewSelected }: Props) {
   const done = rows.filter((r) => r.status === 'done').length
   return (
-    <nav aria-label="Ranked applicants" className="flex min-h-0 flex-col">
-      <div className="flex items-baseline justify-between px-4 pb-3 pt-4">
+    <nav aria-label="Ranked applicants" className="flex min-h-0 flex-1 flex-col">
+      <div className="px-2 pt-3">
+        <Link
+          to={`/jobs/${jobId}`}
+          aria-current={overviewSelected ? 'page' : undefined}
+          className={`flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-semibold transition-colors duration-150 ${
+            overviewSelected ? 'bg-white shadow-[0_1px_4px_rgba(74,21,75,0.12)] ring-1 ring-aubergine' : 'hover:bg-white/70'
+          }`}
+        >
+          <LayoutDashboard className="size-4 text-aubergine" aria-hidden />
+          Overview
+        </Link>
+      </div>
+      <div className="flex items-baseline justify-between border-t border-aubergine-mute/40 px-4 pb-3 pt-4 mt-3">
         <h2 className="text-sm font-bold tracking-[0.2px]">Applicants</h2>
         <span className="text-xs tabular-nums text-ink-mute">
           {done} ranked{rows.length > done ? ` of ${rows.length}` : ''}
         </span>
       </div>
-      <ol className="flex flex-col gap-0.5 overflow-y-auto px-2 pb-3">
+      {rows.length === 0 && <p className="px-4 text-xs text-ink-mute">Applicants appear here once resumes are uploaded.</p>}
+      <ol className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 pb-3">
         {rows.map((row) => {
           const selected = row.id === selectedId
           const failed = row.status === 'failed'

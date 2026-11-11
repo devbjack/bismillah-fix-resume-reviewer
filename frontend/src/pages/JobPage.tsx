@@ -1,23 +1,28 @@
-import { ArrowLeft, Download, Trash2, Users } from 'lucide-react'
+import { ArrowLeft, Download, Settings2, Trash2 } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router'
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router'
 import { deleteJob, exportUrl, getJob, getRanking, getStatus, type Job, type RankRow, type Status } from '../api'
 import { ApplicantList } from '../components/ApplicantList'
 import { ApplicantReview } from '../components/ApplicantReview'
-import { RequirementsEditor } from '../components/RequirementsEditor'
-import { ResumeUpload } from '../components/ResumeUpload'
+import { Overview } from '../components/Overview'
+import { SetupView } from '../components/SetupView'
 import { Button, Notice, buttonClass } from '../components/ui'
+
+type View = 'overview' | 'applicant' | 'setup'
 
 export function JobPage() {
   const params = useParams()
   const jobId = Number(params.jobId)
   const applicantParam = params.applicantId ? Number(params.applicantId) : null
   const navigate = useNavigate()
-  const warning = (useLocation().state as { warning?: string | null } | null)?.warning
+  const location = useLocation()
+  const warning = (location.state as { warning?: string | null } | null)?.warning
+  const view: View = applicantParam !== null ? 'applicant' : location.pathname.endsWith('/setup') ? 'setup' : 'overview'
 
   const [job, setJob] = useState<Job | null>(null)
   const [notFound, setNotFound] = useState(false)
   const [rows, setRows] = useState<RankRow[]>([])
+  const [rowsLoaded, setRowsLoaded] = useState(false)
   const [status, setStatus] = useState<Status>({ done: 0, total: 0 })
   const [deleting, setDeleting] = useState(false)
   const [syncError, setSyncError] = useState<string | null>(null)
@@ -29,6 +34,7 @@ export function JobPage() {
       const [s, r] = await Promise.all([getStatus(jobId), getRanking(jobId)])
       setStatus(s)
       setRows(r)
+      setRowsLoaded(true)
       setSyncError(null)
     } catch (e) {
       setSyncError((e as Error).message)
@@ -74,67 +80,88 @@ export function JobPage() {
   }
   if (!job) return <div className="mx-auto mt-10 h-8 max-w-7xl animate-pulse rounded bg-hairline px-4" aria-label="Loading job" />
 
-  // ignore a URL applicant that isn't in this job (old or foreign link) and fall back to the top one
-  const fromUrl = rows.some((r) => r.id === applicantParam) ? applicantParam : null
-  const selectedId = fromUrl ?? rows.find((r) => r.status === 'done')?.id ?? rows[0]?.id ?? null
-  const selected = rows.find((r) => r.id === selectedId)
+  // a job without confirmed requirements has nothing to summarize yet
+  if (job.status === 'draft' && view === 'overview') {
+    return <Navigate to={`/jobs/${jobId}/setup`} replace state={location.state} />
+  }
+  const selected = rows.find((r) => r.id === applicantParam)
+  // wait for the ranking before judging a deep link, then send old or foreign links to the overview
+  if (view === 'applicant' && rowsLoaded && !selected) return <Navigate to={`/jobs/${jobId}`} replace />
+
+  const pct = status.total ? Math.round((100 * status.done) / status.total) : 0
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6">
-      <Link to="/" className="inline-flex items-center gap-1.5 rounded-sm text-sm text-link hover:text-link-hover hover:underline">
-        <ArrowLeft className="size-4" aria-hidden />
-        All jobs
-      </Link>
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <h1 className="mr-auto text-[32px] font-bold leading-tight tracking-[-0.256px]">{job.name}</h1>
-        {rows.length > 0 && (
-          <a href={exportUrl(job.id)} className={buttonClass('secondary', 'sm')}>
-            <Download className="size-4" aria-hidden />
-            Export CSV
-          </a>
-        )}
-        <Button variant="danger" size="sm" onClick={remove} busy={deleting}>
-          <Trash2 className="size-4" aria-hidden />
-          Delete job
-        </Button>
-      </div>
+    <div className="md:grid md:h-[calc(100dvh-3.5rem)] md:grid-cols-[300px_minmax(0,1fr)]">
+      <aside className="flex max-h-[40vh] flex-col border-b border-hairline bg-cream md:max-h-none md:border-b-0 md:border-r">
+        <ApplicantList jobId={jobId} rows={rows} selectedId={selected?.id ?? null} overviewSelected={view === 'overview'} />
+      </aside>
 
-      <div className="mt-6 flex flex-col gap-5">
-        {syncError && <Notice>Lost contact with the app: {syncError}. Is it still running?</Notice>}
-        {deleteError && <Notice>Couldn't delete this job: {deleteError}</Notice>}
-        {warning && job.status === 'draft' && <Notice>{warning}</Notice>}
-        <RequirementsEditor
-          key={job.status + (job.requirements ?? []).map((r) => r.id).join(',')}
-          job={job}
-          hasApplicants={status.total > 0}
-          onSaved={(saved) => {
-            setJob(saved)
-            refresh()
-          }}
-        />
-        {job.status === 'confirmed' && <ResumeUpload jobId={job.id} status={status} onUploaded={refresh} />}
-      </div>
-
-      {rows.length > 0 && (
-        <section aria-label="Results" className="mt-8 overflow-hidden rounded-xl border border-hairline md:grid md:grid-cols-[320px_minmax(0,1fr)]">
-          <div className="border-b border-hairline bg-cream md:max-h-[calc(100dvh-7rem)] md:border-b-0 md:border-r md:sticky md:top-0">
-            <ApplicantList jobId={job.id} rows={rows} selectedId={selectedId} />
+      <div className="min-w-0 md:overflow-y-auto">
+        <header className="sticky top-0 z-10 border-b border-hairline bg-white/95 px-5 py-4 backdrop-blur-sm sm:px-8">
+          <Link to="/" className="inline-flex items-center gap-1.5 rounded-sm text-sm text-link hover:text-link-hover hover:underline">
+            <ArrowLeft className="size-4" aria-hidden />
+            All jobs
+          </Link>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <h1 className="mr-auto min-w-0 text-[26px] font-bold leading-tight tracking-[-0.2px]">{job.name}</h1>
+            {status.total > 0 && scoring && (
+              <div className="flex w-44 flex-col gap-1">
+                <span className="text-xs tabular-nums text-ink-mute">
+                  {status.done} of {status.total} scored
+                </span>
+                <div
+                  role="progressbar"
+                  aria-label="Scoring progress"
+                  aria-valuemin={0}
+                  aria-valuemax={status.total}
+                  aria-valuenow={status.done}
+                  className="h-1.5 overflow-hidden rounded-pill bg-hairline"
+                >
+                  <div className="h-full rounded-pill bg-aubergine transition-[width] duration-500 ease-out" style={{ width: `${pct}%` }} />
+                </div>
+              </div>
+            )}
+            <Link to={`/jobs/${jobId}/setup`} aria-current={view === 'setup' ? 'page' : undefined} className={buttonClass('secondary', 'sm')}>
+              <Settings2 className="size-4" aria-hidden />
+              Setup
+            </Link>
+            {rows.length > 0 && (
+              <a href={exportUrl(jobId)} className={buttonClass('secondary', 'sm')}>
+                <Download className="size-4" aria-hidden />
+                Export CSV
+              </a>
+            )}
+            <Button variant="danger" size="sm" onClick={remove} busy={deleting}>
+              <Trash2 className="size-4" aria-hidden />
+              Delete job
+            </Button>
           </div>
-          <div className="min-w-0 p-5 sm:p-8">
-            {selected ? (
+        </header>
+
+        <div className="flex flex-col gap-5 p-5 sm:p-8">
+          {syncError && <Notice>Lost contact with the app: {syncError}. Is it still running?</Notice>}
+          {deleteError && <Notice>Couldn't delete this job: {deleteError}</Notice>}
+          {view === 'overview' && <Overview jobId={jobId} version={`${status.done}/${status.total}`} />}
+          {view === 'setup' && (
+            <SetupView
+              job={job}
+              status={status}
+              warning={warning}
+              onSaved={(saved) => {
+                setJob(saved)
+                refresh()
+              }}
+              onUploaded={refresh}
+            />
+          )}
+          {view === 'applicant' &&
+            (selected ? (
               <ApplicantReview applicantId={selected.id} version={`${selected.status}:${selected.score}:${selected.error}`} />
             ) : (
-              <p className="text-ink-mute">Select an applicant to see their review.</p>
-            )}
-          </div>
-        </section>
-      )}
-      {job.status === 'confirmed' && rows.length === 0 && (
-        <div className="mt-8 flex items-center gap-3 rounded-xl bg-cream px-5 py-6 text-sm">
-          <Users className="size-5 shrink-0 text-aubergine" aria-hidden />
-          <p>Upload resumes above. Applicants appear here, ranked by score, as soon as each one is scored.</p>
+              <div className="h-40 animate-pulse rounded-xl bg-hairline" aria-label="Loading applicant" />
+            ))}
         </div>
-      )}
+      </div>
     </div>
   )
 }
