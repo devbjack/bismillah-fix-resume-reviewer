@@ -1,0 +1,21 @@
+CLARA WIJAYANTI
+clara.wijayanti@example.com | Surabaya
+
+PROFILE
+Python developer with 4 years of experience building web applications with Django.
+
+PROFESSIONAL EXPERIENCE
+Software Engineer - KlinikKu (2022 - present)
+- Designed REST APIs with Django REST Framework for patient booking and medical records.
+- Modelled PostgreSQL schemas and optimised slow queries with indexes.
+- Ran all services locally and in staging with Docker Compose.
+- Wrote unit tests with Python unittest and pytest; kept coverage above 80%.
+
+Web Developer - Agensi Kreatif Nusa (2021 - 2022)
+- Built Django websites for clients and maintained their PostgreSQL databases.
+
+EDUCATION
+BSc Information Systems - Institut Teknologi Sepuluh Nopember, 2021
+
+SKILLS
+Python, Django, Django REST Framework, PostgreSQL, Docker, pytest, Git

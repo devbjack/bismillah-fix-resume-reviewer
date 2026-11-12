@@ -1,0 +1,18 @@
+YUSUF MAULANA
+yusuf.maulana@example.com | Batam
+
+SUMMARY
+Embedded software engineer with 5 years of experience writing firmware in C and C++.
+
+EXPERIENCE
+Embedded Software Engineer - PT Sensor Pintar (2021 - present)
+- Write C firmware for STM32 microcontrollers in smart energy meters.
+- Develop C++ drivers for sensors over SPI, I2C and UART.
+- Set up GitLab CI pipelines that build firmware and run unit tests on every commit.
+- Write unit tests with Unity and Ceedling.
+
+EDUCATION
+BSc Computer Engineering - Universitas Indonesia, 2021
+
+SKILLS
+C, C++, STM32, FreeRTOS, SPI, I2C, GitLab CI, Unity, Ceedling, oscilloscope

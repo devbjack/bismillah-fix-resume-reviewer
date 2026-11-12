@@ -1,0 +1,24 @@
+FARAH NABILA
+farah.nabila@example.com
+Cilegon
+
+SKILLS
+SolidWorks, AutoCAD
+ANSYS (FEA)
+MATLAB
+Preventive maintenance
+Root cause analysis
+
+EDUCATION
+BEng Mechanical Engineering
+Institut Teknologi Sepuluh Nopember, 2020
+---COLUMN---
+SUMMARY
+Mechanical engineer with 6 years of experience in plant maintenance and equipment design.
+
+EXPERIENCE
+Maintenance Engineer - PT Kimia Cilegon (2022 - present)
+Plan preventive maintenance for pumps and compressors. Cut unplanned downtime by 25% with vibration monitoring. Lead root cause analysis for equipment failures.
+
+Design Engineer - PT Mesin Nusantara (2020 - 2022)
+Designed conveyor parts in SolidWorks and checked stresses with ANSYS. Wrote MATLAB scripts for load calculations.

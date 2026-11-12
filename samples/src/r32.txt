@@ -1,0 +1,22 @@
+WAHYU KURNIAWAN
+wahyu.kurniawan@example.com | Semarang
+
+SUMMARY
+Full-stack JavaScript developer with 4 years of experience in Node.js and React.
+
+EXPERIENCE
+Full-Stack Developer - Kurir Kilat (2022 - present)
+- Designed and built REST APIs with Node.js and Express for parcel tracking.
+- Used MySQL for shipments and MongoDB for tracking events.
+- Deployed Docker containers to AWS ECS.
+- Set up GitHub Actions pipelines that test and deploy every merge to main.
+- Wrote Jest and Supertest tests for the API.
+
+Web Developer - Sinar Software (2021 - 2022)
+- Built React dashboards for clients.
+
+EDUCATION
+BSc Informatics - Universitas Diponegoro, 2021
+
+SKILLS
+JavaScript, TypeScript, Node.js, Express, React, MySQL, MongoDB, Docker, AWS, GitHub Actions, Jest

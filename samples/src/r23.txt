@@ -1,0 +1,21 @@
+MELATI ANGGRAENI
+melati.anggraeni@example.com | Depok
+
+SUMMARY
+Junior backend developer with 1.5 years of Python experience, eager to grow.
+
+EXPERIENCE
+Junior Backend Developer - SehatApp (May 2025 - present)
+- Built REST API endpoints with FastAPI for appointment booking.
+- Wrote PostgreSQL queries and Alembic migrations.
+- Dockerised the service for local development.
+- Set up a GitHub Actions pipeline that runs pytest and linting on pull requests.
+
+Software Engineering Intern - SehatApp (Sep 2024 - Feb 2025)
+- Fixed bugs and wrote pytest tests for the patient API.
+
+EDUCATION
+BSc Computer Science - Universitas Indonesia, 2024
+
+SKILLS
+Python, FastAPI, PostgreSQL, Docker, GitHub Actions, pytest

@@ -1,0 +1,19 @@
+KARTIKA SARI DEWANTI
+kartika.dewanti@example.com | Cikarang
+
+SUMMARY
+Automation engineer with 5 years of professional experience writing Python software for factory test equipment.
+
+EXPERIENCE
+Test Automation Engineer - PT Elektronika Jaya (2021 - present)
+- Develop Python applications that control test rigs and log results.
+- Store and query test results in a MySQL database for quality reports.
+- Maintain Jenkins pipelines that build and release the automation tools.
+- Run the reporting jobs on Microsoft Azure virtual machines.
+- Write pytest unit tests for all drivers and parsers.
+
+EDUCATION
+Diploma (D3) in Informatics Management - Politeknik Negeri Jakarta, 2021
+
+SKILLS
+Python, MySQL, Jenkins, Azure, pytest, Linux, serial and USB device protocols

@@ -1,0 +1,20 @@
+VINA AMALIA
+vina.amalia@example.com | Jakarta
+
+SUMMARY
+UI/UX designer with 4 years of experience designing mobile and web products.
+
+EXPERIENCE
+Product Designer - LiburanYuk (2022 - present)
+- Design the booking app's user flows and interfaces in Figma.
+- Run usability tests with customers and turn findings into design changes.
+- Maintain the company design system with the frontend team.
+
+UI Designer - Studio Garis (2021 - 2022)
+- Designed websites and brand guidelines for small businesses.
+
+EDUCATION
+BA Visual Communication Design - Institut Kesenian Jakarta, 2021
+
+SKILLS
+Figma, Adobe Illustrator, Adobe Photoshop, prototyping, user research, wireframing

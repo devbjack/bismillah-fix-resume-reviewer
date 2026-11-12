@@ -1,0 +1,22 @@
+INDAH PERMATA
+indah.permata@example.com | Bandung
+
+SUMMARY
+Go backend engineer with 4 years of experience building high-throughput services.
+
+EXPERIENCE
+Backend Engineer (Go) - OjekKilat (2022 - present)
+- Designed and built REST APIs in Go for driver matching and trip pricing.
+- Used MySQL for trip data and Redis for driver locations.
+- Deployed Docker containers to Google Cloud Run on GCP.
+- Built GitHub Actions workflows for build, test and deploy.
+- Wrote table-driven unit tests with Go's testing package.
+
+Software Engineer - Startup Hub (2021 - 2022)
+- Built Go microservices and occasional Bash scripts for data cleanup.
+
+EDUCATION
+BSc Computer Science - Universitas Padjadjaran, 2021
+
+SKILLS
+Go, MySQL, Redis, Docker, GCP (Cloud Run, Pub/Sub), GitHub Actions

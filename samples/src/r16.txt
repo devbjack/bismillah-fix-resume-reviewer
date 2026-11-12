@@ -1,0 +1,18 @@
+FAJAR HIDAYAT
+fajar.hidayat@example.com | Malang
+
+SUMMARY
+Backend developer with 3 years of professional Python experience at a manufacturing company.
+
+WORK EXPERIENCE
+Backend Developer - PT Pabrik Sejahtera (2023 - present)
+- Built REST APIs with Flask for the factory inventory and production planning system.
+- Designed PostgreSQL tables and wrote reporting queries for plant managers.
+- Packaged the services as Docker containers running on the company's on-premise servers.
+- Wrote automated tests with pytest for every API endpoint.
+
+EDUCATION
+BSc Computer Science - Universitas Brawijaya, 2023
+
+SKILLS
+Python, Flask, SQLAlchemy, PostgreSQL, Docker, pytest, Linux

@@ -1,0 +1,31 @@
+BAYU SAPUTRO
+bayu.saputro@example.com
+Bandung
+
+TECHNICAL SKILLS
+Python, FastAPI, Flask
+MySQL, PostgreSQL
+Docker, Kubernetes
+Google Cloud (GKE, Cloud SQL)
+GitLab CI/CD
+pytest, Locust
+
+EDUCATION
+BSc Informatics
+Institut Teknologi Bandung, 2018
+
+CERTIFICATIONS
+Google Cloud Associate Cloud Engineer
+---COLUMN---
+SUMMARY
+Backend engineer with 6 years of professional Python experience building payment and order services.
+
+WORK EXPERIENCE
+Lead Backend Engineer - BayarIn (2023 - present)
+Designed and built REST APIs in FastAPI for a payment gateway handling 500k transactions per day. Owned the MySQL schema and query tuning. Packaged services with Docker and ran them on Google Kubernetes Engine. Set up GitLab CI/CD pipelines that lint, test and deploy on every merge.
+
+Backend Engineer - Pasar Digital (2020 - 2023)
+Built Flask REST services for order management backed by PostgreSQL. Wrote pytest unit and integration suites and load tests with Locust.
+
+Junior Software Engineer - Solusi Data (2018 - 2020)
+Maintained internal Python tools and reporting jobs.

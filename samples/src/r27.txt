@@ -1,0 +1,21 @@
+RINA MARLINA
+rina.marlina@example.com | Bogor
+
+SUMMARY
+QA engineer with 5 years of experience in manual and automated testing of web and mobile apps.
+
+EXPERIENCE
+QA Automation Engineer - Asuransi Kita (2022 - present)
+- Write automated UI tests in Java with Selenium and TestNG.
+- Test REST APIs with Postman and REST Assured.
+- Prepare test data with MySQL queries.
+- Maintain the Jenkins pipelines that run regression suites nightly.
+
+QA Engineer - Toko Elektronik Online (2021 - 2022)
+- Wrote test cases and ran manual regression for each release.
+
+EDUCATION
+BSc Information Systems - Universitas Gunadarma, 2021
+
+SKILLS
+Selenium, TestNG, REST Assured, Postman, Java, MySQL, Jenkins, JIRA

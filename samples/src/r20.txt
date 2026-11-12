@@ -1,0 +1,22 @@
+JOKO SUSILO
+joko.susilo@example.com | Solo
+
+SUMMARY
+Career changer and bootcamp graduate. Former retail store supervisor, now a Python web developer with 2 years of experience.
+
+EXPERIENCE
+Junior Web Developer - Toko Buku Pintar (2024 - present)
+- Built REST APIs with Django REST Framework for the online bookstore.
+- Wrote PostgreSQL queries and Django models.
+- Ran the development environment with Docker Compose.
+- Added pytest tests for the order and payment flows.
+
+Store Supervisor - Minimarket Sentosa (2017 - 2023)
+- Managed a team of 8 staff and daily stock reports.
+
+EDUCATION
+Full-Stack Python Bootcamp - Hacktiv8, 2023
+High School Diploma - SMA Negeri 3 Surakarta, 2016
+
+SKILLS
+Python, Django, PostgreSQL, Docker, pytest, HTML, CSS

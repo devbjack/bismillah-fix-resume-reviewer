@@ -1,0 +1,21 @@
+TARI WULANDARI
+tari.wulandari@example.com | Bandung
+
+SUMMARY
+Machine learning engineer with 5 years of Python experience in computer vision.
+
+EXPERIENCE
+Machine Learning Engineer - AgriVision (2021 - present)
+- Train image classification models in Python with PyTorch to detect crop disease.
+- Serve models through a REST API built with Flask, packaged in Docker.
+- Train and deploy models on AWS SageMaker; store images and datasets in S3.
+
+Research Assistant - ITB AI Lab (2020 - 2021)
+- Published two papers on plant image segmentation.
+
+EDUCATION
+MSc Artificial Intelligence - Institut Teknologi Bandung, 2021
+BSc Computer Science - Institut Teknologi Bandung, 2019
+
+SKILLS
+Python, PyTorch, OpenCV, Flask, Docker, AWS SageMaker, S3

@@ -1,0 +1,25 @@
+SATRIA NUGRAHA
+satria.nugraha@example.com
+Jakarta
+
+SKILLS
+Python, SQL
+Apache Airflow, dbt
+PostgreSQL, BigQuery
+FastAPI
+Google Cloud Platform
+pytest
+
+EDUCATION
+BSc Computer Science
+Universitas Gadjah Mada, 2020
+---COLUMN---
+SUMMARY
+Data engineer with 6 years of professional Python experience building data pipelines.
+
+EXPERIENCE
+Data Engineer - Media Berita Nasional (2022 - present)
+Built Python ETL pipelines with Airflow that load PostgreSQL data into BigQuery on Google Cloud Platform. Built an internal REST API with FastAPI so analysts can request data extracts. Wrote pytest tests for every transformation.
+
+Data Analyst - Survei Indonesia (2020 - 2022)
+Wrote Python and SQL to clean survey data and build dashboards.

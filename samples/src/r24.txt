@@ -1,0 +1,21 @@
+NANDA SAPUTRA
+nanda.saputra@example.com | Jakarta
+
+SUMMARY
+Frontend engineer with 5 years of experience building React web applications.
+
+EXPERIENCE
+Frontend Engineer - BeliCepat (2022 - present)
+- Built the checkout and account pages in React and TypeScript.
+- Integrated the frontend with REST APIs provided by the backend team.
+- Set up GitHub Actions workflows that lint, test and deploy the web app.
+- Wrote unit tests with Jest and React Testing Library and end-to-end tests with Playwright.
+
+Frontend Developer - Digital Kreasi (2021 - 2022)
+- Built responsive landing pages with Next.js and Tailwind CSS.
+
+EDUCATION
+BSc Computer Science - Universitas Bina Nusantara, 2021
+
+SKILLS
+JavaScript, TypeScript, React, Next.js, Tailwind CSS, Jest, Playwright, GitHub Actions

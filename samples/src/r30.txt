@@ -1,0 +1,23 @@
+UMAR FARUQ
+umar.faruq@example.com | Surabaya
+
+SUMMARY
+IT support and system administrator with 7 years of experience keeping office networks and servers running.
+
+EXPERIENCE
+System Administrator - PT Pelayaran Timur (2021 - present)
+- Manage Windows Server, Active Directory and group policies for 300 users.
+- Run VMware virtual machines on on-premise servers.
+- Configure Mikrotik and Cisco network equipment and VPNs.
+
+IT Support Officer - Rumah Sakit Harapan (2019 - 2021)
+- Handled helpdesk tickets, printer and laptop repairs.
+
+EDUCATION
+Diploma (D3) in Computer Engineering - Politeknik Elektronika Negeri Surabaya, 2019
+
+CERTIFICATIONS
+MikroTik MTCNA, CompTIA A+
+
+SKILLS
+Windows Server, Active Directory, VMware, Mikrotik, Cisco, PowerShell, helpdesk

@@ -1,0 +1,26 @@
+HENDRA GUNADI
+hendra.gunadi@example.com
+Jakarta
+
+SKILLS
+Java 17, Spring Boot
+Hibernate, JPA
+PostgreSQL, Oracle
+Docker
+AWS (EC2, RDS)
+Jenkins
+JUnit, Mockito
+
+EDUCATION
+BSc Computer Science
+Universitas Bina Nusantara, 2019
+---COLUMN---
+SUMMARY
+Java backend engineer with 6 years of experience building banking and insurance systems.
+
+EXPERIENCE
+Backend Engineer - Bank Merdeka Digital (2022 - present)
+Designed REST APIs with Spring Boot for account opening and transfers. Wrote PostgreSQL migrations with Flyway. Ran services in Docker on AWS EC2 with RDS. Built Jenkins pipelines that build, test and deploy each service. Wrote JUnit and Mockito tests for all business rules.
+
+Java Developer - Asuransi Prima (2019 - 2022)
+Maintained Spring MVC applications on Oracle databases and built REST endpoints for the claims portal.

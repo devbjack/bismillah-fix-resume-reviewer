@@ -1,0 +1,21 @@
+PUTU ARDANA
+putu.ardana@example.com | Denpasar
+
+SUMMARY
+DevOps engineer with 6 years of experience running cloud infrastructure for travel platforms.
+
+EXPERIENCE
+Senior DevOps Engineer - Bali Travel Group (2022 - present)
+- Run Kubernetes clusters on AWS and GCP, provisioned with Terraform.
+- Build CI/CD pipelines in GitLab CI and Argo CD for 40 services.
+- Administer PostgreSQL and MySQL databases: backups, replication and upgrades.
+- Write Bash and Terraform for automation; occasional small Python scripts.
+
+System Engineer - Hotel Nusa Dua (2020 - 2022)
+- Migrated on-premise servers to Docker containers.
+
+EDUCATION
+BSc Computer Science - Universitas Udayana, 2020
+
+SKILLS
+Docker, Kubernetes, Terraform, AWS, GCP, GitLab CI, Argo CD, PostgreSQL, MySQL, Bash, Prometheus, Grafana

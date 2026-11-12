@@ -1,0 +1,26 @@
+LUKMAN HAKIM
+lukman.hakim@example.com
+Medan
+
+SKILLS
+PHP 8, Laravel
+MySQL, MariaDB
+REST API design
+Docker
+AWS (EC2, S3)
+PHPUnit
+Vue.js
+
+EDUCATION
+BSc Informatics
+Universitas Sumatera Utara, 2020
+---COLUMN---
+PROFILE
+PHP backend developer with 5 years of experience building Laravel applications.
+
+WORK EXPERIENCE
+Backend Developer - Wisata Sumatra (2022 - present)
+Designed and built REST APIs in Laravel for tour bookings and payments. Wrote MySQL queries and migrations. Ran services in Docker on AWS EC2 with uploads stored in S3. Wrote PHPUnit tests for booking rules.
+
+Web Developer - Media Lokal (2020 - 2022)
+Built Laravel websites and an admin panel with Vue.js on MariaDB.

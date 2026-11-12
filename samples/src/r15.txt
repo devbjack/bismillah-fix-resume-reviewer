@@ -1,0 +1,32 @@
+EKA PUTRI MAHARANI
+eka.maharani@example.com
+Jakarta
+
+SKILLS
+Languages: Python, Go, SQL
+Frameworks: Django, FastAPI, gRPC
+Databases: MySQL, PostgreSQL
+Infra: Docker, Terraform
+Cloud: AWS (ECS, RDS, S3)
+CI/CD: GitHub Actions
+Testing: pytest, Go test
+
+EDUCATION
+MSc Computer Science
+Universitas Indonesia, 2018
+
+BSc Computer Science
+Universitas Indonesia, 2016
+---COLUMN---
+PROFILE
+Senior software engineer with 8 years of experience building backend systems in Python and Go.
+
+EXPERIENCE
+Senior Software Engineer - Belanja Raya (2021 - present)
+Lead a team of five backend engineers. Designed public REST APIs and internal gRPC services in Python and Go. Migrated a monolith on MySQL to services on AWS ECS with RDS. Built GitHub Actions pipelines for build, test and blue-green deployment. Introduced contract tests and raised pytest coverage to 90%.
+
+Software Engineer - Finansia (2018 - 2021)
+Built Django REST Framework APIs for loan applications on PostgreSQL. Dockerised the stack and wrote integration tests.
+
+Software Engineer Intern - Telko Nusantara (2016)
+Wrote Python scripts for network monitoring.

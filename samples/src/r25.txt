@@ -1,0 +1,25 @@
+OKI FIRMANSYAH
+oki.firmansyah@example.com
+Bandung
+
+SKILLS
+Kotlin, Java
+Jetpack Compose
+Jetpack DataStore
+Retrofit
+Bitrise CI/CD
+JUnit, Espresso
+
+EDUCATION
+BSc Informatics
+Universitas Telkom, 2022
+---COLUMN---
+SUMMARY
+Android developer with 4 years of experience shipping consumer apps to the Play Store.
+
+EXPERIENCE
+Android Developer - DompetKu (2022 - present)
+Built the wallet app in Kotlin with Jetpack Compose. Connected the app to backend services with Retrofit and stored user settings with Jetpack DataStore. Set up Bitrise CI/CD pipelines that build, test and publish beta releases. Wrote JUnit unit tests and Espresso UI tests.
+
+Mobile Developer Intern - Kampus Apps (2021)
+Built a campus event app in Java.

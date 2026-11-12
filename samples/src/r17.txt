@@ -1,0 +1,21 @@
+GITA RAMADHANI
+gita.ramadhani@example.com | Yogyakarta
+
+ABOUT ME
+Software engineer with 4 years of Python and Django experience in e-commerce.
+
+EMPLOYMENT HISTORY
+Software Engineer - Batik Online (2022 - present)
+- Designed and built REST APIs in Django REST Framework for the product catalogue and checkout.
+- Wrote MySQL queries and migrations; reduced checkout latency by 40%.
+- Set up GitLab CI pipelines that run tests and deploy to the staging server automatically.
+- Wrote pytest suites for payment and shipping modules.
+
+Junior Developer - Kopi Kita (2021 - 2022)
+- Built a Django admin dashboard for store inventory.
+
+EDUCATION
+BSc Informatics - Universitas Islam Indonesia, 2021
+
+SKILLS
+Python, Django, MySQL, GitLab CI, pytest, Git, Linux

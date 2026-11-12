@@ -1,0 +1,18 @@
+DIMAS PRAKOSO
+dimas.prakoso@example.com | Jakarta
+
+SUMMARY
+Backend developer with 5 years of Python experience on logistics and booking platforms.
+
+EXPERIENCE
+Backend Developer - TiketGo (2021 - present)
+- Built REST APIs with FastAPI for flight and hotel search.
+- Stored bookings in PostgreSQL and cached search results in Redis.
+- Containerised services with Docker and deployed them to Amazon EKS on AWS.
+- Used AWS Lambda and SQS for asynchronous email and notification jobs.
+
+EDUCATION
+BSc Computer Engineering - Universitas Brawijaya, 2021
+
+SKILLS
+Python, FastAPI, PostgreSQL, Redis, Docker, Kubernetes, AWS (EKS, Lambda, SQS)
