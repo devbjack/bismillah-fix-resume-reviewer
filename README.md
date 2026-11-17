@@ -11,7 +11,6 @@ Everything runs on your machine: no paid API, no cloud.
 3. **Decision:** the LLM is asked whether those excerpts show the requirement is met. P(met) is the model's own probability of answering "yes" vs "no" (token logprobs).
 4. **Score:** `round(100 × Σ weight × P(met) / Σ weight)`; must-haves weigh 2, nice-to-haves 1 by default. A must-have below 50% flags the applicant (⚠) but never hides them.
 
-Design and decisions: [docs/superpowers/specs/2026-11-09-ai-resume-reviewer-design.md](docs/superpowers/specs/2026-11-09-ai-resume-reviewer-design.md).
 
 ## Setup (Windows, macOS or Linux)
 
